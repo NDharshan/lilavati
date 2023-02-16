@@ -34,10 +34,11 @@ public class Table {
                 String Data = null;  
                 int[] row = jt.getSelectedRows();  
                 int[] columns = jt.getSelectedColumns();  
-                for (int i = 0; i < row.length; i++) {  
-                  for (int j = 0; j < columns.length; j++) {  
-                    Data = (String) jt.getValueAt(row[i], columns[j]);  
-                  } }  
+//                for (int i = 0; i < row.length; i++) {  
+//                  for (int j = 0; j < columns.length; j++) {  
+//                    Data = (String) jt.getValueAt(row[i], columns[j]);  
+//                  } }  
+                Data = (String) jt.getValueAt(row[row.length - 1], columns[columns.length - 1]);
                 System.out.println("Table element selected is: " + Data);    
 
 
