@@ -23,6 +23,21 @@ This was built as Mini Project in the Course of Advanced Java 2023
 * View - view selected shlokas and run selected verses live
 * Background Information - Information about Bhaskaracharya
 
+# Contents of Lilavati discussed
+We study the contents of Lilavati through the following headers for the ease of understanding of a cursory reader familiar with Modern Mathematics 
+* __Fundamental Operations__
+* __Fractions__
+* __On Infinity and Eight rules of Zero__
+* __Reverse process and the concept of limits__
+* __Ratio and Proportions__
+* __Simple Interest, Progressions__
+* __Algebra__
+* __Squares and Cubes__
+* __Trigonometry and Geometry__
+* __Mensuration of Polygons and other objects__
+* __Volume__
+* __Discrete Mathematics__
+
 # Snapshots of Figma Design
 ![st1](https://user-images.githubusercontent.com/98468801/217336935-e05dd8ab-c733-4a0b-b04b-e2335d6caaab.png)
 ![st2](https://user-images.githubusercontent.com/98468801/217336667-9640636f-5210-4d6e-ad8e-c9c49aecd003.png)
@@ -31,6 +46,11 @@ This was built as Mini Project in the Course of Advanced Java 2023
 # Further Enhancements
 * Considering more Algorithms
 * Interactive view of the entire lilavati
+
+# References
+* Dr. Shivangi Upadhyay, Uttrakhand Open University, "Lilavati" (Presentation) 
+* G´erard G. Emch, R. Sridharan, M. D. Srinivas, "Contributions to the History of Indian Mathematics"
+* Anand Vishwanath's lectures in Sanskrit on the subject
 
 # Team
 ### N.Dharshan
