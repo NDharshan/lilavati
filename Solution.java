@@ -1,19 +1,13 @@
-package iks;
 import java.io.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.Timer;
-
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.awt.geom.AffineTransform;
@@ -182,7 +176,8 @@ public class Solution extends JPanel implements ActionListener, MouseWheelListen
     if(equation.length >2) 
     {
       return null; 
-    }/*
+    }
+    /*
     if(equation.length ==1) {
 
       return compileNRun(equation[0].trim() , min, max, inc);
@@ -647,7 +642,8 @@ public class Solution extends JPanel implements ActionListener, MouseWheelListen
 
       String temp ="factorial(" + stored.substring(replacedBottom, index) + ")";
       stored =stored.substring(0, replacedBottom) +temp +stored.substring( index+1) ;
-    }while(stored.contains("|")) {// Factorial
+    }
+    while(stored.contains("|")) {// Factorial
       int index =stored.indexOf("|");
 
       int top = index;
@@ -659,17 +655,10 @@ public class Solution extends JPanel implements ActionListener, MouseWheelListen
       }
       top=startBracket;
 
-
-
-
       String temp ="abs(" + stored.substring(index+1, top) + ")";
       stored =stored.substring(0, index) +temp +stored.substring( top+1) ;
 
     }
-
-
-
-
 
     stored =stored.replaceAll("sqrt", "(double)Math.sqrt");
     stored =stored.replaceAll("floor", "(double)Math.floor");
