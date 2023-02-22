@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pell's equation solver
+</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<meta name="description" content="Pell's equation solver">
+<meta name="keywords" content="maths, algorithm,Diophantine equation,Pell's equation,">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="jbstyle1.css"/>
+<style>
+body{
+    background:url("jshtmlpellsolverbackground.png");/*need to change to correct url*/
+}
+</style>
+</head>
+<body>
+<script type='text/javascript' src='biginteger.js'></script>
+<script type='text/javascript'>
+//v10 uses algebra to figure out the next value of y so even with big integers its not too slow
+//took a while to get the algebra right
+//globals
+var N;
+var sqrtN;//make a global to save calculating lots of times
+var timerId;
+var tempOutPut;
+var tempVect;
+var stepCounter;
+
+function init(){
+	stepCounter=0;
+	tempOutPut='';
+	document.getElementById('interimOutPut').innerHTML='';
+	document.getElementById('outPut').innerHTML='';
+	N=BigInteger(document.forms[0].N.value);
+	sqrtN=estsqrt(N);
+	if(sqrtN.multiply(sqrtN).compare(N)==0){
+		alert('solutions do not exist for N a perfect square');
+		return;
+	}
+	if(N.compare(1)>0){
+		findNext();
+	}
+	else{
+		alert('N must be a positive integer');
+	}
+}
+
+function estsqrt(m){
+	//the estimate is guaranteed to be the next integer larger than the actual square root or the square root if N is a perfect square
+	//but this doesnt work for 10 11 12 13 14 15
+    n=BigInteger(m);
+    if(n.compare(BigInteger(3))==0){
+		return BigInteger(2);
+    }
+    if(n.compare(2)==0){
+		return BigInteger(2);
+    }
+    if(n.compare(1)==0){
+		return BigInteger(1);
+	}
+    guessnew=BigInteger(2);
+	//need to find a way to estimate the sqrt basically as 10^(log(n)/2)
+    guessold=n.divide(4);
+    while((guessold.subtract(guessnew)).abs()>1){
+        temp=guessnew;
+        guessnew=((n.divide(guessold)).add(guessold)).divide(2);
+        guessold=temp;
+        }//while
+    if(guessnew.square(guessnew).compare(N)==0){
+		return guessnew;
+	}
+    if(guessnew.square(guessnew).compare(N)>0){
+		guessnew=guessnew.subtract(1);
+    }
+    while(guessnew.square(guessnew).compare(N)<0){
+		guessnew=guessnew.add(1);
+	}
+	return guessnew;
+}//estsqrt
+
+function gcd(x,y){
+    while(BigInteger(y).compare(0)!=0){
+        var z=BigInteger(x).remainder(y);
+        x=y;
+        y=z;
+        }
+    return x;
+    }//gcd
+
+function findStartVector(){
+	var x1=sqrtN;
+	var y1=BigInteger(1);
+	var k1=x1.multiply(x1).subtract(N.multiply(y1).multiply(y1));
+	return [x1,y1,k1];
+}
+
+function findNext(){
+	stepCounter++;
+	tempVect=findStartVector();
+	timerId=setInterval(interimFeedback,100);
+}
+
+function interimFeedback(){
+	if(BigInteger(tempVect[2]).compare(1)==0){
+		clearInterval(timerId);
+		var outPutString='The smallest solution found was ';
+		outPutString+=BigInteger.toString(tempVect[0])+'<sup>2</sup> &#8211; '+N+'&#215;'+BigInteger.toString(tempVect[1])+"<sup>2</sup> &#61; "+BigInteger.toString(tempVect[2]);
+		if(stepCounter<10){
+			document.getElementById('outPut').innerHTML=outPutString;
+		}
+		else{
+			outPutString+=', using '+stepCounter+' calculations.';
+			document.getElementById('outPut').innerHTML=outPutString;
+		}
+		//make final output and STOP
+		return;
+	}
+	stepCounter++;
+	tempOutPut=BigInteger.toString(tempVect[0])+'<sup>2</sup> &#8211; '+N+'&#215;'+BigInteger.toString(tempVect[1])+'<sup>2</sup> &#61;  '+BigInteger.toString(tempVect[2])+'<br>'+tempOutPut;
+	document.getElementById('interimOutPut').innerHTML=tempOutPut;
+	var minm=BigInteger(1);
+	var testval=tempVect[0].add(tempVect[1]);
+	while(testval.remainder(tempVect[2]).compare(0)!=0){
+		testval=testval.add(tempVect[1]);
+		minm=minm.add(1);
+	}
+	var n=gcd(tempVect[1],tempVect[2]);
+	var mGap=tempVect[2].divide(n);
+	var newm;
+	if(sqrtN.compare(minm)<=0){
+		newm=minm;
+	}
+	else{
+		var M=((sqrtN.subtract(minm)).divide(mGap)).add(1);
+		newm=minm.add(M.multiply(mGap));
+	}
+	var mval=newm;
+	var newVect=[];
+	newVect[0]=(mval.multiply(tempVect[0]).add(N.multiply(tempVect[1]))).divide(tempVect[2]);
+	newVect[1]=(tempVect[0].add(mval.multiply(tempVect[1]))).divide(tempVect[2]);
+	newVect[2]=(mval.square(mval).subtract(N)).divide(tempVect[2]);
+	tempVect=newVect;
+}
+
+//window.onload=init;
+</script>
+<a href='http://www.jakebakermaths.org.uk'>Home</a>
+<h1>Pell's equation</h1>
+<h2>Solving x<sup>2</sup> - Ny<sup>2</sup> = 1.</h2>
+<p>Enter a positive non-square integer for N into the box and click "Go!".  The smallest integer solution for x will be found, using <a href="http://en.wikipedia.org/wiki/Pell's_equation">Bhaskara II's</a> method.  Each step of the calculation will be displayed below the final solution.  [For some really bad values for N, see <a href='http://oeis.org/A033316' title='1, 2, 5, 10, 13, 29, 46, 53, 61, 109, 181, 277, 397, 409, 421, 541, 661, 1021, 1069, 1381, 1549, 1621, 2389, 3061, 3469, 4621, 4789, 4909, 5581, 6301, 6829, 8269, 8941, 9949, 12541, 13381, 16069, 17341, 24049, 24229, 25309, 29269, 30781, 32341, 36061'>OEIS A033316</a>.  For example you may enjoy trying 1021 for N.]</p>
+<form onsubmit='return false'>
+<input type='text' name='N' value='17' style='width:200px;' onkeydown="if(event.keyCode==13){document.getElementById('goButton').click();}" autocomplete='off'/>
+<input type='button' id='goButton' value='Go!' onclick='init()' />
+</form>
+<h2 id='outPut' style='min-height:33px;'>&nbsp;</h2>
+<div id='interimOutPut'></div>
+</body>
+</html>
